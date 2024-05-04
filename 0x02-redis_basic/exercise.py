@@ -60,12 +60,11 @@ def replay(fn: Callable) -> None:
 
 class Cache:
     """ Cache Class Representation """
-    def __init__(self):
+    def __init__(self) -> None:
         """ Instantiates the class """
         self._redis = redis.Redis()
         self._redis.flushdb()
 
-    
     @count_calls
     @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
@@ -74,14 +73,15 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Optional[Callable] = None) -> Union[str, bytes, int, float]:
-        """ get method that takes a key string argument and an optional Callable argument named fn """
+    def get(
+            self,
+            key: str,
+            fn: Callable = None,
+            ) -> Union[str, bytes, int, float]:
+        '''Retrieves a value from a Redis data storage.
+        '''
         data = self._redis.get(key)
-        if data is None:
-            return None
-        if fn:
-            return fn(data)
-        return data
+        return fn(data) if fn is not None else data
 
     def get_str(self, key: str) -> str:
         """ get_str method that automatically parametrizes
