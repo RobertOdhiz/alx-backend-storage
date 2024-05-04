@@ -32,9 +32,8 @@ def count_calls(method: Callable) -> Callable:
         return method(self, *args, **kwargs)
     return wrapper
 
-
-def replay(method: Callable):
-    """ to display the history of calls of a particular function """
+def replay(cache, method: Callable):
+    """ """
     method_name = method.__qualname__
     inputs_key = method_name + ":inputs"
     outputs_key = method_name + ":outputs"
@@ -43,8 +42,7 @@ def replay(method: Callable):
     print(f"{method_name} was called {len(inputs)} times:")
     for input_data, output_data in zip(inputs, outputs):
         input_args = eval(input_data.decode("utf-8"))
-        output = output_data.decode("utf-8")
-        print(f"{method_name}{input_args} -> {output}")
+        print(f"{method_name}{input_args}")
 
 
 class Cache:
